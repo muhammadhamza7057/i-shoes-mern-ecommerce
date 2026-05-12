@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # I.Shoes - Premium E-Commerce Platform
 
 > A modern, high-performance, visually premium MERN e-commerce application for shoes. Built with production-level architecture, advanced animations, and enterprise-grade features.
@@ -264,3 +265,7 @@ For questions or issues:
 **Last Updated**: May 2026
 **Version**: 0.1.0 (Architecture Phase)
 
+=======
+# i-shoes-mern-ecommerce
+A modern full-stack MERN Shoes E-Commerce Web Application with responsive UI/UX, secure authentication, admin dashboard, product management, cart and checkout system, order tracking, and advanced animations using React, Node.js, Express, MongoDB, GSAP, and Framer Motion.
+>>>>>>> c0efeff1ae12cc9d6f8358bf99061e88d529b010
