@@ -1,0 +1,316 @@
+@import './animations.css';
+
+/* Custom font imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Sora:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --scroll-progress: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(0, 255, 136, 0.08), transparent 28%),
+    radial-gradient(circle at top right, rgba(11, 11, 11, 0.06), transparent 24%),
+    linear-gradient(180deg, #f8f8f6 0%, #f3f4f1 100%);
+  color: #0b0b0b;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: 'Sora', sans-serif;
+  letter-spacing: -0.03em;
+}
+
+body.dark {
+  background-color: #0b0b0b;
+  color: #f5f5f5;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-track.dark {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #00ff88;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00e876;
+}
+
+/* Selection color */
+::selection {
+  background-color: #00ff88;
+  color: #0b0b0b;
+}
+
+/* Smooth transitions */
+* {
+  @apply transition-colors duration-200;
+}
+
+/* Utility classes */
+.container-custom {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.app-shell {
+  position: relative;
+  overflow-x: clip;
+}
+
+.app-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(11, 11, 11, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent 85%);
+  opacity: 0.6;
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 18px 60px rgba(11, 11, 11, 0.08);
+}
+
+.premium-border {
+  border: 1px solid rgba(11, 11, 11, 0.08);
+  box-shadow: 0 20px 45px rgba(11, 11, 11, 0.06);
+}
+
+.section-kicker {
+  @apply text-xs font-bold uppercase tracking-[0.35em] text-black/45;
+}
+
+.section-title {
+  @apply mt-3 text-3xl font-semibold md:text-4xl;
+}
+
+.text-gradient {
+  @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-full font-semibold hover:bg-neutral transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 bg-accent text-primary rounded-full font-semibold hover:bg-opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 border border-black/10 text-primary rounded-full font-semibold hover:bg-primary hover:text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+/* Focus states for accessibility */
+button:focus,
+a:focus {
+  @apply outline-none ring-2 ring-accent ring-offset-2;
+}
+
+img {
+  display: block;
+}
+
+/* cursor: none is handled in the Premium Cursor System block above */
+
+/* ─── Premium Cursor System ──────────────────────────────────────────────── */
+
+/* Hide native cursor on fine-pointer devices */
+@media (pointer: fine) {
+  body,
+  a,
+  button,
+  [role='button'],
+  [data-cursor],
+  input,
+  select,
+  textarea {
+    cursor: none !important;
+  }
+}
+
+/* Outer trailing ring */
+.cursor-ring {
+  /* Offset so the ring is centered on the pointer */
+  margin-left: -36px;
+  margin-top:  -36px;
+}
+
+.cursor-ring__circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(0, 0, 0, 0.14);
+  background: transparent;
+  display: grid;
+  place-items: center;
+  will-change: transform, border-color, background-color;
+  /* Subtle glass sheen */
+  backdrop-filter: blur(0px);
+  transition: backdrop-filter 0.2s;
+}
+
+.cursor-ring__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #0b0b0b;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 5px 10px;
+  border-radius: 999px;
+  box-shadow: 0 4px 16px rgba(11, 11, 11, 0.1);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Inner snappy dot */
+.cursor-dot {
+  margin-left: -6px;
+  margin-top:  -6px;
+}
+
+.cursor-dot__core {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #00FF88;
+  box-shadow: 0 0 10px 2px rgba(0, 255, 136, 0.44);
+  will-change: transform, background-color, box-shadow;
+}
+
+/* Burst particle spawned dynamically on cart-add */
+.cursor-burst-fx {
+  position: fixed;
+  width: 64px;
+  height: 64px;
+  margin-left: -32px;
+  margin-top:  -32px;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 9999;
+  background: radial-gradient(circle at 50% 40%, var(--burst-color, #00FF88) 0%, transparent 55%);
+  mix-blend-mode: screen;
+}
+
+/* Legacy class kept for backward compat */
+.cursor-burst {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 72px;
+  height: 72px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle at 50% 40%, var(--burst-color) 0%, transparent 45%);
+  z-index: 9999;
+}
+
+/* Reveal hooks: never hide by default to avoid blank sections if JS is delayed */
+[data-reveal],
+[data-gsap-reveal] {
+  will-change: transform, opacity;
+}
+
+/* small polish for header logo focus */
+.no-focus-ring:focus:not(:focus-visible) {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+[data-magnetic] {
+  will-change: transform;
+}
+
+/* data-cursor elements use the custom cursor system */
+
+.scroll-progress-bar {
+  width: calc(var(--scroll-progress, 0) * 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Loading animation */
+.loading {
+  @apply animate-spin;
+}
+
+/* Error state */
+.error {
+  @apply text-red-500;
+}
+
+/* Success state */
+.success {
+  @apply text-green-500;
+}
+
+/* Truncate text utilities */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
