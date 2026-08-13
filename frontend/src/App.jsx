@@ -16,6 +16,8 @@ import Register from './pages/Register'
 import OrderHistory from './pages/OrderHistory'
 import AdminDashboard from './pages/AdminDashboard'
 import Wishlist from './pages/Wishlist'
+import About from './pages/About'
+import Contact from './pages/Contact'
 import NotFound from './pages/NotFound'
 
 const ScrollToTop = () => {
@@ -82,6 +84,8 @@ function App() {
                     </ProtectedRoute>
                   }
                 />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
                 <Route path="*" element={<NotFound />} />
                 </Routes>
               </motion.div>

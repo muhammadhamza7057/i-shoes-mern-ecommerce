@@ -229,6 +229,16 @@ const Navbar = () => {
 
             {/* ── Desktop nav ───────────────────────────────────────────── */}
             <div className="hidden items-center justify-center gap-1 lg:flex">
+              {/* Home */}
+              <NavLink to="/" className={navLinkClass} end>
+                {({ isActive }) => (
+                  <>
+                    Home
+                    {isActive && <ActiveBar />}
+                  </>
+                )}
+              </NavLink>
+
               {/* Products */}
               <NavLink to="/products" className={navLinkClass} end>
                 {({ isActive }) => (
@@ -293,6 +303,26 @@ const Navbar = () => {
                   )}
                 </NavLink>
               )}
+
+              {/* About */}
+              <NavLink to="/about" className={navLinkClass}>
+                {({ isActive }) => (
+                  <>
+                    About
+                    {isActive && <ActiveBar />}
+                  </>
+                )}
+              </NavLink>
+
+              {/* Contact Us */}
+              <NavLink to="/contact" className={navLinkClass}>
+                {({ isActive }) => (
+                  <>
+                    Contact Us
+                    {isActive && <ActiveBar />}
+                  </>
+                )}
+              </NavLink>
 
               {/* Wishlist — auth only */}
               {isAuthenticated && (
@@ -466,9 +496,12 @@ const Navbar = () => {
 
                   <div className="grid gap-1">
                     {[
+                      ['Home', '/'],
                       ['Products', '/products'],
                       ...(isAuthenticated ? [['Orders', '/orders']] : []),
                       ...(isAuthenticated ? [['Wishlist', '/wishlist']] : []),
+                      ['About', '/about'],
+                      ['Contact Us', '/contact'],
                       ...(isAuthenticated && user?.role === 'admin' ? [['Admin', '/admin']] : []),
                     ].map(([label, to]) => (
                       <Link

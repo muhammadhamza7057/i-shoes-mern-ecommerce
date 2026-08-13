@@ -15,7 +15,7 @@ const Footer = () => {
           transition={{ duration: 0.6 }}
           className="glass-panel rounded-[32px] p-6 md:p-8"
         >
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.75fr_0.75fr_0.9fr]">
+          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.65fr_0.65fr_0.65fr_0.9fr]">
             <div>
               <h3 className="text-3xl font-semibold text-black">I.<span className="text-[#00A85A]">Shoes</span></h3>
               <p className="mt-4 max-w-sm text-sm leading-7 text-black/55">Premium shoes e-commerce built for performance, polished UI, and a commercial-ready customer journey.</p>
@@ -29,6 +29,7 @@ const Footer = () => {
             <div>
               <p className="section-kicker">Explore</p>
               <div className="mt-4 space-y-3 text-sm text-black/65">
+                <Link to="/" className="block transition hover:text-black">Home</Link>
                 <Link to="/products" className="block transition hover:text-black">Products</Link>
                 {isAuthenticated && (
                   <Link to="/orders" className="block transition hover:text-black">Orders</Link>
@@ -37,6 +38,14 @@ const Footer = () => {
                 {isAuthenticated && user?.role === 'admin' && (
                   <Link to="/admin" className="block transition hover:text-black">Admin</Link>
                 )}
+              </div>
+            </div>
+
+            <div>
+              <p className="section-kicker">Company</p>
+              <div className="mt-4 space-y-3 text-sm text-black/65">
+                <Link to="/about" className="block transition hover:text-black">About</Link>
+                <Link to="/contact" className="block transition hover:text-black">Contact Us</Link>
               </div>
             </div>
 
@@ -50,8 +59,7 @@ const Footer = () => {
               </div>
             </div>
 
-            <div>
-              <p className="section-kicker">Contact</p>
+            <div id="contact">
               <div className="mt-4 space-y-3 text-sm text-black/65">
                 <p>support@ishoes.com</p>
                 <p>Mon - Sat</p>

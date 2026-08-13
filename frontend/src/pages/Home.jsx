@@ -263,7 +263,7 @@ const Home = () => {
         ))}
       </section>
 
-      <section className="grid gap-6 rounded-[36px] bg-white/70 p-6 shadow-[0_24px_70px_rgba(11,11,11,0.06)] backdrop-blur md:grid-cols-[0.86fr_1.14fr]" data-reveal-trigger>
+      <section className="grid gap-6 rounded-[36px] bg-white/70 p-6 shadow-[0_24px_70px_rgba(11,11,11,0.06)] backdrop-blur md:grid-cols-[0.86fr_1.14fr]" id="about" data-reveal-trigger>
         <div data-reveal>
           <p className="section-kicker">Categories</p>
           <h2 className="section-title">Built for every style of movement.</h2>
