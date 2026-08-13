@@ -29,11 +29,11 @@ const MotionSystem = () => {
   const rawX = useMotionValue(-200);
   const rawY = useMotionValue(-200);
 
-  // Two-tier spring: outer ring is slower (trailing feel), inner dot is snappy
-  const outerX = useSpring(rawX, { stiffness: 180, damping: 28, mass: 0.6 });
-  const outerY = useSpring(rawY, { stiffness: 180, damping: 28, mass: 0.6 });
-  const innerX = useSpring(rawX, { stiffness: 520, damping: 32, mass: 0.18 });
-  const innerY = useSpring(rawY, { stiffness: 520, damping: 32, mass: 0.18 });
+  // Two-tier spring: outer ring has a slight trail, inner dot is snappy
+  const outerX = useSpring(rawX, { stiffness: 380, damping: 28, mass: 0.35 });
+  const outerY = useSpring(rawY, { stiffness: 380, damping: 28, mass: 0.35 });
+  const innerX = useSpring(rawX, { stiffness: 700, damping: 32, mass: 0.12 });
+  const innerY = useSpring(rawY, { stiffness: 700, damping: 32, mass: 0.12 });
 
   // ─── Cursor state ───────────────────────────────────────────────────────────
   const [state, setState] = useState({
