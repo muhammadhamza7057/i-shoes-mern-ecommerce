@@ -17,7 +17,10 @@ const Footer = () => {
         >
           <div className="grid gap-10 lg:grid-cols-[1.1fr_0.65fr_0.65fr_0.65fr_0.9fr]">
             <div>
-              <h3 className="text-3xl font-semibold text-black">I.<span className="text-[#00A85A]">Shoes</span></h3>
+              <div className="flex items-center gap-2.5">
+                <img src="/favicon.jpeg" alt="I.Shoes logo" className="h-10 w-10 rounded-xl object-cover shadow-[0_8px_24px_rgba(11,11,11,0.12)]" />
+                <h3 className="text-3xl font-semibold text-black">I.<span className="text-[#00A85A]">Shoes</span></h3>
+              </div>
               <p className="mt-4 max-w-sm text-sm leading-7 text-black/55">Premium shoes e-commerce built for performance, polished UI, and a commercial-ready customer journey.</p>
               <div className="mt-6 flex flex-wrap gap-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-black/45">
                 <span className="rounded-full bg-black/5 px-3 py-2 transition hover:bg-black/10">Fast checkout</span>
