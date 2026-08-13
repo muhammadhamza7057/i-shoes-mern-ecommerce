@@ -49,10 +49,8 @@ const values = [
 ];
 
 const team = [
-  { name: 'Aizaz Khan', role: 'Founder & CEO', initials: 'AK' },
-  { name: 'Sara Ahmed', role: 'Head of Design', initials: 'SA' },
-  { name: 'Omar Farooq', role: 'Lead Engineer', initials: 'OF' },
-  { name: 'Nadia Malik', role: 'Customer Experience', initials: 'NM' },
+  { name: 'Muhammad Hamza', role: 'Founder & CEO', initials: 'MH' },
+  { name: 'Aizaz Ahmed', role: 'Co-Founder & CTO', initials: 'AA' },
 ];
 
 const fadeUp = {
@@ -184,7 +182,7 @@ const About = () => {
           <p className="section-kicker text-[#00FF88]">The people</p>
           <h2 className="section-title text-white">Behind I.Shoes</h2>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="flex flex-wrap justify-center gap-4">
           {team.map((member, i) => (
             <motion.div
               key={member.name}
@@ -193,7 +191,7 @@ const About = () => {
               whileInView="show"
               viewport={{ once: true, amount: 0.2 }}
               custom={i}
-              className="rounded-[24px] border border-white/10 bg-white/5 p-6 text-center backdrop-blur"
+              className="w-64 rounded-[24px] border border-white/10 bg-white/5 p-6 text-center backdrop-blur"
             >
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#00FF88] text-xl font-bold text-black">
                 {member.initials}
