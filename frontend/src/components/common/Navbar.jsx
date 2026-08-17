@@ -127,8 +127,9 @@ const Navbar = () => {
   return (
     <motion.header
       className="sticky top-0 z-50"
-      animate={{ y: hidden ? '-110%' : '0%' }}
-      transition={{ duration: 0.32, ease: [0.25, 0.46, 0.45, 0.94] }}
+      initial={{ y: -24, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
     >
       {/* ── Search overlay ──────────────────────────────────────────────── */}
       <AnimatePresence>
@@ -219,9 +220,11 @@ const Navbar = () => {
               className="flex shrink-0 items-center gap-2.5 no-focus-ring"
               aria-label="I.Shoes home"
             >
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-black text-sm font-bold text-white shadow-[0_8px_24px_rgba(11,11,11,0.22)]">
-                I
-              </span>
+              <img
+                src="/favicon.jpeg"
+                alt="I.Shoes logo"
+                className="h-10 w-10 rounded-xl object-cover shadow-[0_8px_24px_rgba(11,11,11,0.22)]"
+              />
               <span className="text-xl font-semibold tracking-tight text-black">
                 I.<span className="text-[#00A85A]">Shoes</span>
               </span>
@@ -229,6 +232,16 @@ const Navbar = () => {
 
             {/* ── Desktop nav ───────────────────────────────────────────── */}
             <div className="hidden items-center justify-center gap-1 lg:flex">
+              {/* Home */}
+              <NavLink to="/" className={navLinkClass} end>
+                {({ isActive }) => (
+                  <>
+                    Home
+                    {isActive && <ActiveBar />}
+                  </>
+                )}
+              </NavLink>
+
               {/* Products */}
               <NavLink to="/products" className={navLinkClass} end>
                 {({ isActive }) => (
@@ -293,6 +306,26 @@ const Navbar = () => {
                   )}
                 </NavLink>
               )}
+
+              {/* About */}
+              <NavLink to="/about" className={navLinkClass}>
+                {({ isActive }) => (
+                  <>
+                    About
+                    {isActive && <ActiveBar />}
+                  </>
+                )}
+              </NavLink>
+
+              {/* Contact Us */}
+              <NavLink to="/contact" className={navLinkClass}>
+                {({ isActive }) => (
+                  <>
+                    Contact Us
+                    {isActive && <ActiveBar />}
+                  </>
+                )}
+              </NavLink>
 
               {/* Wishlist — auth only */}
               {isAuthenticated && (
@@ -466,9 +499,12 @@ const Navbar = () => {
 
                   <div className="grid gap-1">
                     {[
+                      ['Home', '/'],
                       ['Products', '/products'],
                       ...(isAuthenticated ? [['Orders', '/orders']] : []),
                       ...(isAuthenticated ? [['Wishlist', '/wishlist']] : []),
+                      ['About', '/about'],
+                      ['Contact Us', '/contact'],
                       ...(isAuthenticated && user?.role === 'admin' ? [['Admin', '/admin']] : []),
                     ].map(([label, to]) => (
                       <Link

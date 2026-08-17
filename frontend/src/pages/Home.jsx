@@ -48,14 +48,14 @@ const Home = () => {
 
         gsap.from(targets, {
           opacity: 0,
-          y: 30,
-          duration: 0.85,
-          stagger: 0.1,
-          ease: 'power3.out',
+          y: 16,
+          duration: 0.45,
+          stagger: 0.055,
+          ease: 'power2.out',
           immediateRender: false,
           scrollTrigger: {
             trigger: block,
-            start: 'top 82%',
+            start: 'top 88%',
             once: true,
           }
         });
@@ -65,14 +65,14 @@ const Home = () => {
       imageTargets.forEach((image) => {
         gsap.from(image, {
           opacity: 0,
-          y: 16,
-          scale: 0.985,
-          duration: 0.72,
+          y: 10,
+          scale: 0.99,
+          duration: 0.35,
           ease: 'power2.out',
           immediateRender: false,
           scrollTrigger: {
             trigger: image,
-            start: 'top 90%',
+            start: 'top 92%',
             once: true,
           }
         });
@@ -152,7 +152,7 @@ const Home = () => {
             trigger: storySectionRef.current,
             start: 'top top',
             end: () => `+=${travelDistance()}`,
-            scrub: 1,
+            scrub: 0.3,
             pin: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
@@ -263,7 +263,7 @@ const Home = () => {
         ))}
       </section>
 
-      <section className="grid gap-6 rounded-[36px] bg-white/70 p-6 shadow-[0_24px_70px_rgba(11,11,11,0.06)] backdrop-blur md:grid-cols-[0.86fr_1.14fr]" data-reveal-trigger>
+      <section className="grid gap-6 rounded-[36px] bg-white/70 p-6 shadow-[0_24px_70px_rgba(11,11,11,0.06)] backdrop-blur md:grid-cols-[0.86fr_1.14fr]" id="about" data-reveal-trigger>
         <div data-reveal>
           <p className="section-kicker">Categories</p>
           <h2 className="section-title">Built for every style of movement.</h2>
