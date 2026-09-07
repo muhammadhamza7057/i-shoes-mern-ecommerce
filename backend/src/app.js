@@ -40,6 +40,14 @@ app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 app.use(cookieParser());
 
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    data: { service: 'ishoes-backend', status: 'ok' },
+    message: 'I.Shoes API is running',
+  });
+});
+
 app.get('/health', (req, res) => {
   res.status(200).json({ success: true, data: { status: 'ok' }, message: 'Healthy' });
 });
