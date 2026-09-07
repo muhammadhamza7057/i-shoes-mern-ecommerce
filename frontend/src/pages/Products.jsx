@@ -34,7 +34,7 @@ const Products = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await productService.getAllProducts({
+        const query = {
           page,
           limit: 12,
           search: debouncedSearch,
@@ -44,7 +44,10 @@ const Products = () => {
           minPrice: filters.minPrice,
           maxPrice: filters.maxPrice,
           rating: filters.rating,
-        });
+        };
+        const response = await productService.getAllProducts(
+          Object.fromEntries(Object.entries(query).filter(([, value]) => value !== ''))
+        );
         setProducts(response.products || []);
         setPagination(response.pagination || { total: 0, pages: 1 });
       } catch {

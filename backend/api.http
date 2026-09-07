@@ -1,0 +1,112 @@
+@baseUrl = http://localhost:5000/api/v1
+@accessToken = {{login.response.body.data.accessToken}}
+
+### Health
+GET http://localhost:5000/health
+
+### Register
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "password": "secret12"
+}
+
+### Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@ishoes.com",
+  "password": "admin@123"
+}
+
+### Refresh (requires refreshToken cookie from login)
+POST {{baseUrl}}/auth/refresh
+
+### Me
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{accessToken}}
+
+### Logout
+POST {{baseUrl}}/auth/logout
+Authorization: Bearer {{accessToken}}
+
+### List products
+GET {{baseUrl}}/products?page=1&limit=12&search=runner
+
+### Featured products
+GET {{baseUrl}}/products/featured?limit=8
+
+### Get product
+GET {{baseUrl}}/products/PRODUCT_ID
+
+### List categories
+GET {{baseUrl}}/categories
+
+### Get cart
+GET {{baseUrl}}/cart
+Authorization: Bearer {{accessToken}}
+
+### Add to cart
+POST {{baseUrl}}/cart
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "productId": "PRODUCT_ID",
+  "quantity": 1,
+  "size": "9",
+  "color": "Black"
+}
+
+### Place order (from cart)
+POST {{baseUrl}}/orders
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "useCart": true,
+  "paymentMethod": "COD",
+  "shippingAddress": {
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "email": "jane@example.com",
+    "phone": "1234567890",
+    "street": "1 Main St",
+    "city": "NYC",
+    "state": "NY",
+    "postalCode": "10001",
+    "country": "USA"
+  }
+}
+
+### My orders
+GET {{baseUrl}}/orders
+Authorization: Bearer {{accessToken}}
+
+### Cancel order
+PATCH {{baseUrl}}/orders/ORDER_ID/cancel
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "cancelReason": "Changed mind"
+}
+
+### Admin dashboard
+GET {{baseUrl}}/admin/dashboard
+Authorization: Bearer {{accessToken}}
+
+### Admin update order status
+PATCH {{baseUrl}}/admin/orders/ORDER_ID/status
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "status": "delivered"
+}

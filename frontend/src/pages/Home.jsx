@@ -25,7 +25,7 @@ const Home = () => {
   useEffect(() => {
     const fetchFeatured = async () => {
       try {
-        const response = await productService.getAllProducts({ limit: 8, sortBy: 'rating', sortOrder: 'desc' });
+        const response = await productService.getAllProducts({ limit: 8, sortBy: 'ratingAvg', sortOrder: 'desc' });
         setFeatured(response.products || []);
       } catch {
         setFeatured([]);
@@ -212,12 +212,12 @@ const Home = () => {
             <div className="glass-panel rounded-[32px] p-4 text-black shadow-[0_25px_80px_rgba(0,0,0,0.25)]">
               <div className="overflow-hidden rounded-[26px] bg-[linear-gradient(180deg,#f8f8f8_0%,#ececec_100%)]">
                 <img
-                  src={heroProduct?.images?.[0]?.url || 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80'}
+                  src={heroProduct?.images?.[0]?.url || '/favicon.jpeg'}
                   alt={heroProduct?.name || 'Featured shoe'}
                   className="h-[420px] w-full object-cover object-center"
                   onError={(event) => {
                     event.currentTarget.onerror = null;
-                    event.currentTarget.src = 'https://via.placeholder.com/1200x1200?text=I.Shoes';
+                    event.currentTarget.src = '/favicon.jpeg';
                   }}
                 />
               </div>

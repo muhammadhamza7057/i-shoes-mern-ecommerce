@@ -34,7 +34,13 @@ api.interceptors.response.use(
       localStorage.removeItem(APP_CONSTANTS.STORAGE_KEYS.USER);
       window.location.href = APP_CONSTANTS.ROUTES.LOGIN;
     }
-    return Promise.reject(error.response?.data || error.message);
+    const responseError = error.response?.data?.error;
+    return Promise.reject({
+      message: responseError?.message || error.response?.data?.message || error.message,
+      code: responseError?.code,
+      details: responseError?.details,
+      status: error.response?.status,
+    });
   }
 );
 

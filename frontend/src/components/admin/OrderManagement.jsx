@@ -2,7 +2,16 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatDate, formatPrice } from '../../utils/formatters';
 
-const ORDER_STATUSES = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+const ORDER_STATUSES = ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
+
+const STATUS_FLOW = {
+  pending: ['confirmed', 'cancelled'],
+  confirmed: ['processing', 'cancelled'],
+  processing: ['shipped', 'cancelled'],
+  shipped: ['delivered'],
+  delivered: [],
+  cancelled: [],
+};
 
 const STATUS_STYLES = {
   pending:    'bg-amber-100 text-amber-700 border-amber-200',
@@ -148,7 +157,7 @@ const OrderManagement = ({ orders = [], onUpdateStatus }) => {
                         Update status
                       </p>
                       <div className="flex flex-wrap gap-2">
-                        {ORDER_STATUSES.map((status) => (
+                        {(STATUS_FLOW[order.orderStatus] || []).map((status) => (
                           <button
                             key={status}
                             onClick={() => onUpdateStatus(order._id, status)}
@@ -158,9 +167,12 @@ const OrderManagement = ({ orders = [], onUpdateStatus }) => {
                                 : 'border-black/10 text-black/55 hover:bg-black/5'
                             }`}
                           >
-                            {order.orderStatus === status ? `✓ ${status}` : status}
+                            {status}
                           </button>
                         ))}
+                        {!STATUS_FLOW[order.orderStatus]?.length && (
+                          <span className="text-xs text-black/40">No further status changes</span>
+                        )}
                       </div>
                     </div>
                   </div>

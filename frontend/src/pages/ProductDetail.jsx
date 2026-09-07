@@ -53,12 +53,28 @@ const ProductDetail = () => {
       setLoading(true);
       try {
         const response = await productService.getProductById(id);
-        setProduct(response.product);
+        const loadedProduct = response.product;
+        if (!loadedProduct) {
+          setProduct(null);
+          return;
+        }
 
-        const listResponse = await productService.getAllProducts({ limit: 8, category: response.product?.category });
-        setRelatedProducts((listResponse.products || []).filter((item) => item._id !== response.product?._id));
+        setProduct(loadedProduct);
+
+        try {
+          const listResponse = await productService.getAllProducts({
+            limit: 8,
+            category: loadedProduct.categoryId,
+          });
+          setRelatedProducts(
+            (listResponse.products || []).filter((item) => item._id !== loadedProduct._id)
+          );
+        } catch {
+          setRelatedProducts([]);
+        }
       } catch {
         setProduct(null);
+        setRelatedProducts([]);
       } finally {
         setLoading(false);
       }
@@ -69,8 +85,11 @@ const ProductDetail = () => {
 
   useEffect(() => {
     if (!product) return;
-    setSelectedSize(product.sizes?.[0] ? String(product.sizes[0]) : '');
-    setSelectedColor(Object.keys(colorImageMap)[0] || product.colors?.[0] || '');
+    const firstAvailable = product.variants?.find(
+      (variant) => (variant.stock - variant.reservedStock) > 0
+    ) || product.variants?.[0];
+    setSelectedSize(firstAvailable?.size ? String(firstAvailable.size) : '');
+    setSelectedColor(firstAvailable?.color || Object.keys(colorImageMap)[0] || product.colors?.[0] || '');
     setVariantNotice('');
   }, [product, colorImageMap]);
 
@@ -133,7 +152,21 @@ const ProductDetail = () => {
 
   const availableColors = useMemo(() => new Set(Object.keys(colorImageMap)), [colorImageMap]);
   const availableSizes = useMemo(() => new Set((product?.sizes || []).map((size) => String(size))), [product]);
-  const canAdd = useMemo(() => Boolean(product && selectedSize && selectedColor), [product, selectedSize, selectedColor]);
+  const selectedVariant = useMemo(() => {
+    if (!product?.variants?.length) return null;
+    return product.variants.find(
+      (variant) =>
+        String(variant.size) === String(selectedSize) &&
+        String(variant.color).toLowerCase() === String(selectedColor).toLowerCase()
+    ) || null;
+  }, [product, selectedSize, selectedColor]);
+  const availableQuantity = selectedVariant
+    ? Math.max(0, (selectedVariant.stock || 0) - (selectedVariant.reservedStock || 0))
+    : 0;
+  const canAdd = useMemo(
+    () => Boolean(product && availableQuantity > 0 && selectedVariant),
+    [product, availableQuantity, selectedVariant]
+  );
 
   if (loading) return <LoadingSkeleton type="page" />;
   if (!product) return <div className="rounded-3xl border bg-white p-10 text-center">Product not found.</div>;
@@ -143,8 +176,8 @@ const ProductDetail = () => {
       promptLogin('add to cart');
       return;
     }
-    if (!product.stock || product.stock <= 0) {
-      toast.error('Not in stock');
+    if (!selectedVariant || availableQuantity <= 0) {
+      toast.error('This size and color are out of stock');
       return;
     }
 
@@ -162,6 +195,7 @@ const ProductDetail = () => {
       ...product,
       selectedSize,
       selectedColor,
+      selectedSku: selectedVariant.sku,
       quantity: 1
     });
     toast.success('Added to cart');
@@ -207,11 +241,26 @@ const ProductDetail = () => {
             <div className="text-xs uppercase tracking-[0.3em] text-white/45">Price</div>
             <div className="mt-2 text-3xl font-semibold">{formatPrice(product.finalPrice || product.price)}</div>
           </div>
+          <div
+            className={`rounded-2xl border px-4 py-3 text-sm font-semibold ${
+              availableQuantity > 0
+                ? 'border-[#00A85A]/20 bg-[#00FF88]/10 text-[#007A43]'
+                : 'border-red-200 bg-red-50 text-red-600'
+            }`}
+          >
+            {selectedVariant
+              ? availableQuantity > 0
+                ? `${availableQuantity} available in this size and color`
+                : 'Out of stock in this size and color'
+              : 'Select an available size and color'}
+          </div>
           <div data-detail-reveal>
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-black/40">Size</p>
             <div className="flex flex-wrap gap-3">
               {APP_CONSTANTS.SHOE_SIZES.map((size) => {
-                const available = availableSizes.has(String(size));
+                const available = product.variants?.some(
+                  (variant) => String(variant.size) === String(size) && (variant.stock - variant.reservedStock) > 0
+                );
                 return (
                 <motion.button
                   key={size}
@@ -227,6 +276,7 @@ const ProductDetail = () => {
                   }}
                   whileTap={{ scale: 0.96 }}
                   aria-disabled={!available}
+                  title={available ? `Size ${size} available` : `Size ${size} out of stock`}
                   className={`rounded-full border px-4 py-2 transition ${selectedSize === String(size) ? 'border-black bg-black text-white' : available ? 'border-black/10 bg-white' : 'cursor-not-allowed border-dashed border-black/10 bg-black/[0.03] text-black/35'}`}
                 >
                   {size}
@@ -240,7 +290,9 @@ const ProductDetail = () => {
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-black/40">Color</p>
             <div className="flex flex-wrap gap-3">
               {APP_CONSTANTS.COLOR_OPTIONS.map((colorOption) => {
-                const available = availableColors.has(colorOption.name.toLowerCase());
+                const available = product.variants?.some(
+                  (variant) => String(variant.color).toLowerCase() === colorOption.name.toLowerCase() && (variant.stock - variant.reservedStock) > 0
+                );
                 const isSelected = selectedColor.toLowerCase() === colorOption.name.toLowerCase();
                 return (
                 <motion.button
@@ -257,6 +309,7 @@ const ProductDetail = () => {
                   }}
                   whileTap={{ scale: 0.96 }}
                   aria-disabled={!available}
+                  title={available ? `${colorOption.name} available` : `${colorOption.name} out of stock`}
                   className={`flex items-center gap-2 rounded-full border px-4 py-2 transition ${isSelected ? 'border-[#00FF88] bg-[#00FF88] text-black' : available ? 'border-black/10 bg-white' : 'cursor-not-allowed border-dashed border-black/10 bg-black/[0.03] text-black/35'}`}
                 >
                   <span
@@ -277,8 +330,8 @@ const ProductDetail = () => {
           )}
 
           <div className="flex flex-wrap gap-4" data-detail-reveal>
-            <button onClick={handleAdd} disabled={!canAdd} className="rounded-full bg-black px-6 py-3 font-semibold text-white transition hover:-translate-y-0.5 disabled:opacity-40">
-              {product.stock > 0 ? 'Add to Cart' : 'Not in Stock'}
+            <button onClick={handleAdd} disabled={!canAdd} className="rounded-full bg-black px-6 py-3 font-semibold text-white transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40">
+              {availableQuantity > 0 ? `Add to Cart · ${availableQuantity} left` : 'Out of Stock'}
             </button>
             <button onClick={handleWishlist} className="rounded-full border border-black/10 px-6 py-3 font-semibold text-black transition hover:bg-black/5">
               {isWishlisted(product._id) ? '♥ Remove Wishlist' : '♡ Add Wishlist'}

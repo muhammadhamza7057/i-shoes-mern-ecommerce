@@ -81,7 +81,7 @@ const Cart = () => {
             {cartItems.map((item) => {
               const itemKey   = item.cartId || item._id;
               const itemPrice = item.finalPrice ?? item.price;
-              const imageUrl  = item.images?.[0]?.url || 'https://via.placeholder.com/220?text=I.Shoes';
+              const imageUrl  = item.images?.[0]?.url || '/favicon.jpeg';
 
               return (
                 <motion.div
@@ -101,7 +101,7 @@ const Cart = () => {
                       className="h-full w-full object-cover"
                       onError={(e) => {
                         e.currentTarget.onerror = null;
-                        e.currentTarget.src = 'https://via.placeholder.com/220?text=I.Shoes';
+                        e.currentTarget.src = '/favicon.jpeg';
                       }}
                     />
                   </div>

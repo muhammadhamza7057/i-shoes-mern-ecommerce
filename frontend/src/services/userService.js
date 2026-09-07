@@ -1,11 +1,11 @@
 import api from './api';
 
 export const userService = {
-  getUsers: (params) => api.get('/users', { params }),
-  getUserById: (id) => api.get(`/users/${id}`),
-  createUser: (userData) => api.post('/users', userData),
-  updateUser: (id, userData) => api.patch(`/users/${id}`, userData),
-  deleteUser: (id) => api.delete(`/users/${id}`)
+  getUsers: async (params) => (await api.get('/admin/users', { params })).data,
+  getUserById: async (id) => (await api.get(`/admin/users/${id}`)).data,
+  createUser: async (userData) => (await api.post('/admin/users', userData)).data,
+  updateUser: async (id, userData) => (await api.patch(`/admin/users/${id}`, userData)).data,
+  deleteUser: async (id) => (await api.delete(`/admin/users/${id}`)).data
 };
 
 export default userService;

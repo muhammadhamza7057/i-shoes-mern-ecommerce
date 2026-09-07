@@ -449,10 +449,10 @@ const Checkout = () => {
                 >
                   <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-black/5">
                     <img
-                      src={item.images?.[0]?.url || 'https://via.placeholder.com/80'}
+                      src={item.images?.[0]?.url || '/favicon.jpeg'}
                       alt={item.name}
                       className="h-full w-full object-cover"
-                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://via.placeholder.com/80?text=I'; }}
+                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/favicon.jpeg'; }}
                     />
                   </div>
                   <div className="min-w-0 flex-1">

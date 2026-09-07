@@ -16,6 +16,7 @@ const defaultForm = {
   sizes:       '7,8,9,10',
   colors:      'Black,White',
   stock:       0,
+  status:      'active',
   images:      '',   // newline-separated "Color | URL" entries
 };
 
@@ -101,6 +102,7 @@ const ProductForm = ({ initialValue, onSubmit, submitLabel = 'Save Product' }) =
       sizes:    form.sizes.split(',').map((s) => Number(s.trim())).filter((n) => !isNaN(n) && n > 0),
       colors:   form.colors.split(',').map((c) => c.trim()).filter(Boolean),
       images:   parsedImages,
+      status:   form.status || 'active',
     });
   };
 

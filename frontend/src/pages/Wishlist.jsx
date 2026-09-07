@@ -80,12 +80,12 @@ const Wishlist = () => {
                 <Link to={`/products/${product._id}`} className="block">
                   <div className="aspect-[4/3] overflow-hidden bg-[linear-gradient(180deg,#f7f7f7_0%,#ededed_100%)]">
                     <img
-                      src={product.images?.[0]?.url || 'https://via.placeholder.com/400?text=I.Shoes'}
+                      src={product.images?.[0]?.url || '/favicon.jpeg'}
                       alt={product.name}
                       className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
                       onError={(e) => {
                         e.currentTarget.onerror = null;
-                        e.currentTarget.src = 'https://via.placeholder.com/400?text=I.Shoes';
+                        e.currentTarget.src = '/favicon.jpeg';
                       }}
                     />
                   </div>

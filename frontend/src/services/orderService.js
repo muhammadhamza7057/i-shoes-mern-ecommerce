@@ -2,12 +2,12 @@ import api from './api';
 
 // Order APIs
 export const orderService = {
-  createOrder: (orderData) => api.post('/orders', orderData),
-  getMyOrders: () => api.get('/orders'),
-  getOrderById: (id) => api.get(`/orders/${id}`),
-  getAllOrders: () => api.get('/orders/all'), // Admin only
-  updateOrderStatus: (id, status) => api.patch(`/orders/${id}/status`, { status }),
-  cancelOrder: (id) => api.delete(`/orders/${id}`)
+  createOrder: async (orderData) => (await api.post('/orders', orderData)).data,
+  getMyOrders: async () => (await api.get('/orders')).data,
+  getOrderById: async (id) => (await api.get(`/orders/${id}`)).data,
+  getAllOrders: async (params) => (await api.get('/admin/orders', { params })).data,
+  updateOrderStatus: async (id, status) => (await api.patch(`/admin/orders/${id}/status`, { status })).data,
+  cancelOrder: async (id) => (await api.patch(`/orders/${id}/cancel`)).data
 };
 
 export default orderService;

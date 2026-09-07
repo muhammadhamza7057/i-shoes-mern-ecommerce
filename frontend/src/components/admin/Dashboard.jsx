@@ -212,10 +212,10 @@ const Dashboard = ({ stats = [], orders = [], products = [] }) => {
                   </span>
                   <div className="h-10 w-10 shrink-0 overflow-hidden rounded-xl bg-black/5">
                     <img
-                      src={product.images?.[0]?.url || 'https://via.placeholder.com/80x80?text=I'}
+                      src={product.images?.[0]?.url || '/favicon.jpeg'}
                       alt={product.name}
                       className="h-full w-full object-cover"
-                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://via.placeholder.com/80x80?text=I'; }}
+                      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/favicon.jpeg'; }}
                     />
                   </div>
                   <div className="min-w-0 flex-1">

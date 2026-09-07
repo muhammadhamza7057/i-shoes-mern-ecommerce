@@ -50,9 +50,9 @@ const AdminDashboard = () => {
     setDataError('');
 
     const [productRes, orderRes, userRes] = await Promise.allSettled([
-      productService.getAllProducts({ limit: 200 }),
+      productService.getAllProducts({ limit: 100 }),
       orderService.getAllOrders(),
-      userService.getUsers({ limit: 200 }),
+      userService.getUsers({ limit: 100 }),
     ]);
 
     const failed = [productRes, orderRes, userRes].filter((r) => r.status === 'rejected').length;
@@ -171,7 +171,9 @@ const AdminDashboard = () => {
       await orderService.updateOrderStatus(orderId, status);
       toast.success(`Order marked as ${status}`);
       await refresh(true);
-    } catch { toast.error('Failed to update order status'); }
+    } catch (error) {
+      toast.error(error?.message || 'Failed to update order status');
+    }
   };
 
   // ─── User actions ────────────────────────────────────────────────────────
@@ -506,10 +508,10 @@ const ProductAdminCard = ({ product, onEdit, onSoftDelete, onHardDelete, onResto
     <div className="flex gap-4">
       <div className="h-20 w-20 shrink-0 overflow-hidden rounded-2xl bg-black/5">
         <img
-          src={product.images?.[0]?.url || 'https://via.placeholder.com/300x300?text=I'}
+          src={product.images?.[0]?.url || '/favicon.jpeg'}
           alt={product.name}
           className="h-full w-full object-cover"
-          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://via.placeholder.com/300x300?text=I'; }}
+          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = '/favicon.jpeg'; }}
         />
       </div>
       <div className="min-w-0 flex-1">

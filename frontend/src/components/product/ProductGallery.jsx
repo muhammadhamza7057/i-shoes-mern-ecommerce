@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 const ProductGallery = ({ images = [], productId, activeColor, productColors = [], colorImageMap = {} }) => {
-  const fallback = 'https://via.placeholder.com/1200x1200?text=I.Shoes';
+  const fallback = '/favicon.jpeg';
   const normalized = images.length ? images : [{ url: fallback, altText: 'Product image' }];
   const [activeIndex, setActiveIndex] = useState(0);
 

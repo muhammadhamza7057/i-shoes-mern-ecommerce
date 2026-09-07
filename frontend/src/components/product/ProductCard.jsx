@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import toast from 'react-hot-toast';
@@ -17,10 +17,11 @@ const ProductCard = ({ product, cardLinkMode = 'partial' }) => {
 
   const { isOpen: promptOpen, actionLabel, promptLogin, closePrompt } = useLoginPrompt();
 
-  const fallbackImage = 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80';
+  const fallbackImage = '/favicon.jpeg';
   const [selectedColor, setSelectedColor] = useState(product.colors?.[0] || null);
   const [quickViewOpen, setQuickViewOpen] = useState(false);
   const [addedFeedback, setAddedFeedback] = useState(false);
+  const [imageSrc, setImageSrc] = useState(fallbackImage);
 
   const wishlisted = isWishlisted(product._id);
 
@@ -32,8 +33,16 @@ const ProductCard = ({ product, cardLinkMode = 'partial' }) => {
     return match?.url || product.images?.[0]?.url || fallbackImage;
   }, [selectedColor, product.images]);
 
+  useEffect(() => {
+    setImageSrc(colorImage);
+  }, [colorImage]);
+
   const handleAddToCart = (e) => {
     e.stopPropagation();
+    if (!product.stock || product.stock <= 0) {
+      toast.error('This product is out of stock');
+      return;
+    }
     if (!isAuthenticated) {
       promptLogin('add to cart');
       return;
@@ -89,13 +98,13 @@ const ProductCard = ({ product, cardLinkMode = 'partial' }) => {
           <Link to={`/products/${product._id}`} tabIndex={-1} aria-label={product.name}>
             <div className="relative aspect-[4/4.4] overflow-hidden bg-[linear-gradient(180deg,#f7f7f7_0%,#ededed_100%)]">
               <img
-                src={colorImage}
+                src={imageSrc}
                 alt={product.name}
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-108"
                 loading="lazy"
                 onError={(e) => {
                   e.currentTarget.onerror = null;
-                  e.currentTarget.src = fallbackImage;
+                  setImageSrc(fallbackImage);
                 }}
               />
               {/* Hover overlay */}
@@ -113,6 +122,11 @@ const ProductCard = ({ product, cardLinkMode = 'partial' }) => {
             <span className="rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-black/65 backdrop-blur">
               {product.collection}
             </span>
+            {product.stock <= 0 && (
+              <span className="rounded-full bg-red-600 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white">
+                Out of stock
+              </span>
+            )}
           </div>
 
           {/* Wishlist button */}
@@ -217,17 +231,20 @@ const ProductCard = ({ product, cardLinkMode = 'partial' }) => {
             <motion.button
               type="button"
               onClick={handleAddToCart}
+              disabled={!product.stock || product.stock <= 0}
               whileTap={{ scale: 0.94 }}
               data-magnetic
               data-magnetic-strength="0.1"
               aria-label={`Add ${product.name} to cart`}
               className={`rounded-full px-4 py-2.5 text-sm font-semibold transition-all duration-300 ${
-                addedFeedback
+                !product.stock || product.stock <= 0
+                  ? 'cursor-not-allowed bg-black/10 text-black/40'
+                  : addedFeedback
                   ? 'bg-[#00FF88] text-black scale-105'
                   : 'bg-black text-white hover:-translate-y-0.5 hover:bg-[#111]'
               }`}
             >
-              {addedFeedback ? '✓ Added' : 'Add to Cart'}
+              {!product.stock || product.stock <= 0 ? 'Out of Stock' : addedFeedback ? '✓ Added' : 'Add to Cart'}
             </motion.button>
           </div>
         </div>
@@ -253,12 +270,12 @@ const ProductCard = ({ product, cardLinkMode = 'partial' }) => {
             >
               <div className="overflow-hidden rounded-[26px] bg-[linear-gradient(180deg,#f7f7f7_0%,#ededed_100%)]">
                 <img
-                  src={colorImage}
+                  src={imageSrc}
                   alt={product.name}
                   className="h-full w-full object-cover"
                   onError={(e) => {
                     e.currentTarget.onerror = null;
-                    e.currentTarget.src = fallbackImage;
+                    setImageSrc(fallbackImage);
                   }}
                 />
               </div>
